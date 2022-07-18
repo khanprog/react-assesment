@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import PostList from "./PostList";
 import Select from "react-select";
 import { getPosts } from "../services/Post";
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 class Home extends Component {
 
@@ -43,18 +46,19 @@ class Home extends Component {
     onTriggerLoadMore = () => {
         if (this.state.nextPage >= this.state.posts.length) {
             this.setState({ disable: true });
+            toast.info("No more posts!", {
+                position: toast.POSITION.TOP_RIGHT
+            })
             console.log("No more posts");
             return
         }
 
         const nextPage = this.state.nextPage + this.state.pageSize;
-        console.log(nextPage)
         this.setState({ nextPage: nextPage })
 
     }
 
     handleSelectChange = (option) => {
-        console.log("select changed", option)
         this.setState({ selectedOption: option })
     }
 
@@ -112,6 +116,7 @@ class Home extends Component {
                     </article>
                 </div>
                 <button disabled={this.state.disable} onClick={this.onTriggerLoadMore} className="load-more">Load More</button>
+                <ToastContainer />
             </div>
         )
     }
